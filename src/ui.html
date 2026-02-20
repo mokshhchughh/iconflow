@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Your Master Palette */
+      --grape: #805d93;
+      --bubble-gum: #f49fbc;
+      --apricot: #ffd3ba;
+      --lime: #9ebd6e;
+      --mint: #169873;
+
+      /* UI Mapping */
+      --primary: var(--mint);
+      --primary-hover: #128060;
+      --bg: #FFFFFF;
+      --bg-panel: #fdfbf9;
+      --border: #f2e8ef;
+      --text: #3b2a45;
+      --text-muted: var(--grape);
+    }
+
+    body { 
+      font-family: 'Bricolage Grotesque', sans-serif; 
+      margin: 0; 
+      padding: 20px; 
+      background-color: var(--bg-panel); 
+      color: var(--text); 
+      user-select: none; 
+      overflow-x: hidden; 
+    }
+    
+    /* MODIFIED: Added padding-left to nudge branding to the right */
+    .header { 
+      margin-bottom: 24px; 
+      display: flex; 
+      align-items: center; 
+      gap: 16px; 
+      padding-left: 08px; 
+    }
+    
+    .header-logo { width: 45px; height: 45px; background-color: var(--grape); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 20px; }
+    .header-title { font-size: 22px; font-weight: 700; margin: 0; letter-spacing: -0.5px; color: var(--text); }
+    .header-subtitle { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: -2px; }
+
+    .layout { display: grid; grid-template-columns: 230px 1fr; gap: 20px; }
+    
+    .card { background: var(--bg); padding: 16px; border-radius: 16px; box-shadow: 0 4px 15px rgba(128, 93, 147, 0.05); border: 2px solid var(--border); margin-bottom: 16px; transition: 0.3s; position: relative; }
+    .card:hover { border-color: var(--bubble-gum); box-shadow: 0 6px 20px rgba(244, 159, 188, 0.15); }
+    
+    h2 { font-size: 12px; font-weight: 600; margin-top: 0; margin-bottom: 12px; color: var(--grape); display: flex; align-items: center; justify-content: space-between; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    .stat-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 10px; align-items: center;}
+    .stat-label { color: var(--grape); font-weight: 500; }
+    .stat-value { font-weight: 600; color: var(--text); background-color: var(--apricot); padding: 4px 10px; border-radius: 8px; font-size: 12px;}
+    
+    .stat-value.batch-active { background-color: var(--mint); color: #FFFFFF; }
+    
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px;}
+    label { font-size: 13px; display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text); transition: 0.2s; font-weight: 500; }
+    label:hover { color: var(--mint); }
+    
+    input[type="checkbox"] {
+      appearance: none;
+      background-color: var(--bg);
+      margin: 0;
+      width: 18px; 
+      height: 18px;
+      border: 2px solid #dcd1e0;
+      border-radius: 6px;
+      display: grid;
+      place-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    input[type="checkbox"]::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      transform: scale(0);
+      transition: 120ms transform cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background-color: var(--mint);
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    }
+    input[type="checkbox"]:checked { border-color: var(--mint); background-color: #ebf7f3; }
+    input[type="checkbox"]:checked::before { transform: scale(1); }
+    
+    .radio-group { display: flex; flex-direction: column; gap: 12px; }
+    .control-row { display: flex; align-items: center; justify-content: space-between; position: relative; }
+    
+    .info-btn { width: 18px; height: 18px; background-color: var(--apricot); color: var(--text); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; cursor: default; position: relative; transition: 0.2s; }
+    .info-btn:hover { background-color: var(--bubble-gum); color: white; transform: scale(1.1); }
+    .info-btn:hover .tooltip { opacity: 1; visibility: visible; transform: translateY(0); }
+    
+    .tooltip { 
+      position: absolute; 
+      bottom: 140%; 
+      right: -8px; 
+      width: 180px; 
+      background-color: var(--grape); 
+      color: white; 
+      font-size: 12px; 
+      font-weight: 400; 
+      padding: 10px; 
+      border-radius: 10px; 
+      text-align: left; 
+      opacity: 0; 
+      visibility: hidden; 
+      transition: 0.2s; 
+      z-index: 50; 
+      transform: translateY(5px); 
+      pointer-events: none; 
+      box-shadow: 0 8px 20px rgba(128, 93, 147, 0.3); 
+      line-height: 1.4; 
+    }
+    .tooltip::after { 
+      content: ''; 
+      position: absolute; 
+      top: 100%; 
+      right: 11px; 
+      border-width: 6px; 
+      border-style: solid; 
+      border-color: var(--grape) transparent transparent transparent; 
+    }
+
+    .custom-size-row { display: flex; gap: 8px; margin-top: 14px; border-top: 2px dashed var(--border); padding-top: 14px; }
+    .custom-input { flex: 1; padding: 8px 12px; border: 2px solid var(--border); border-radius: 10px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 13px; font-weight: 500; outline: none; transition: 0.2s; color: var(--text); background-color: var(--bg-panel); }
+    .custom-input:focus { border-color: var(--mint); background-color: white; }
+    .btn-secondary { background-color: var(--apricot); border: none; color: var(--text); padding: 8px 14px; border-radius: 10px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-secondary:hover { background-color: var(--bubble-gum); color: white; }
+
+    .btn-primary { width: 100%; padding: 14px; background-color: var(--mint); color: white; border: none; border-radius: 12px; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; letter-spacing: 0.5px; }
+    .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(22, 152, 115, 0.3); }
+    .btn-primary:active { transform: translateY(1px); }
+
+    .empty-state { text-align: center; padding: 30px 0; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    
+    .empty-icon-container { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; }
+    .scaling-svg { width: 40px; height: 40px; }
+
+    .empty-text { font-size: 14px; color: var(--grape); line-height: 1.5; font-weight: 500; }
+
+    #toast { position: fixed; bottom: -60px; left: 50%; transform: translateX(-50%); background-color: var(--grape); color: white; border: none; padding: 12px 24px; border-radius: 12px; font-size: 13px; font-weight: 500; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100; box-shadow: 0 10px 30px rgba(128, 93, 147, 0.3); pointer-events: none; display: flex; align-items: center; gap: 10px; }
+    #toast.show { bottom: 30px; }
+  </style>
+</head>
+<body>
+
+  <div id="toast">✨ <span id="toast-msg"></span></div>
+
+  <div class="header">
+    <div class="header-logo">if</div>
+    <div>
+      <h1 class="header-title">IconFlow</h1>
+      <div class="header-subtitle">Resize and perfect your icons in one click.</div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="left-col">
+      <div class="card" id="info-card" style="min-height: 160px;">
+        <h2>Selection</h2>
+        <div id="content">
+          <div class="empty-state">
+            <div class="empty-icon-container">
+              <svg class="scaling-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="20" height="20" rx="3" stroke="#805d93" stroke-width="1.5" stroke-dasharray="3 2" />
+                <rect x="7" y="7" width="10" height="10" rx="1.5" fill="#805d93" />
+              </svg>
+            </div>
+            <div class="empty-text">Select one or more<br>icons to begin.</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="left-controls" style="display: none;">
+        <div class="card">
+          <h2>Output Format</h2>
+          <div class="radio-group">
+            <div class="control-row">
+              <label><input type="checkbox" class="output-cb" value="separate"> Separate Frames</label>
+              <div class="info-btn">i<div class="tooltip">Generates standalone frames on the canvas. Best for custom setups.</div></div>
+            </div>
+            <div class="control-row">
+              <label><input type="checkbox" class="output-cb" value="variants" checked> Component Sets</label>
+              <div class="info-btn">i<div class="tooltip">Wraps the icons into a dynamic Figma Component Set automatically spaced with Auto-Layout.</div></div>
+            </div>
+          </div>
+        </div>
+        <button id="generate-btn" class="btn-primary">Generate Icons</button>
+      </div>
+    </div>
+
+    <div class="right-col" id="right-controls" style="opacity: 0.4; pointer-events: none; transition: 0.3s;">
+      <div class="card">
+        <h2>1. Target Sizes (px)</h2>
+        <div class="grid-3" id="size-grid">
+          <label><input type="checkbox" value="32" class="size-cb"> 32</label>
+          <label><input type="checkbox" value="28" class="size-cb"> 28</label>
+          <label><input type="checkbox" value="24" class="size-cb" checked> 24</label>
+          <label><input type="checkbox" value="20" class="size-cb"> 20</label>
+          <label><input type="checkbox" value="16" class="size-cb" checked> 16</label>
+          <label><input type="checkbox" value="12" class="size-cb"> 12</label>
+        </div>
+        <div class="custom-size-row">
+          <input type="number" id="custom-size-input" class="custom-input" placeholder="Custom size...">
+          <button id="add-size-btn" class="btn-secondary">Add</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>2. Weight Profiles</h2>
+        <div class="grid-3">
+          <label><input type="checkbox" value="light" class="weight-cb"> Light</label>
+          <label><input type="checkbox" value="regular" class="weight-cb" checked> Regular</label>
+          <label><input type="checkbox" value="bold" class="weight-cb"> Bold</label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>3. Smart Adjustments</h2>
+        <div class="radio-group">
+          <div class="control-row">
+            <label><input type="checkbox" id="optical-correction" checked> Optical Correction</label>
+            <div class="info-btn">i<div class="tooltip">Boosts stroke weight slightly at smaller sizes to maintain perfect visual balance.</div></div>
+          </div>
+          <div class="control-row">
+            <label><input type="checkbox" id="snap-grid" checked> Snap to Pixel Grid</label>
+            <div class="info-btn">i<div class="tooltip">Forces all coordinates to integers, completely preventing blurry sub-pixel rendering.</div></div>
+          </div>
+          <div class="control-row">
+            <label><input type="checkbox" id="outline-strokes"> Production Outlines</label>
+            <div class="info-btn">i<div class="tooltip">Safely flattens all strokes into filled shapes. Essential for exporting clean SVGs.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Same script logic as before */
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').innerText = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    const outputCbs = document.querySelectorAll('.output-cb');
+    outputCbs.forEach(cb => {
+      cb.addEventListener('change', function() {
+        outputCbs.forEach(other => { if (other !== this) other.checked = false; });
+        if (!this.checked) this.checked = true; 
+      });
+    });
+
+    window.onmessage = (event) => {
+      const msg = event.data.pluginMessage;
+      const contentDiv = document.getElementById('content');
+      const leftControls = document.getElementById('left-controls');
+      const rightControls = document.getElementById('right-controls');
+
+      if (msg.type === 'SELECTION_INFO') {
+        rightControls.style.opacity = '1';
+        rightControls.style.pointerEvents = 'auto';
+        leftControls.style.display = 'block';
+
+        if (msg.count === 1) {
+          contentDiv.innerHTML = `
+            <div class="stat-row"><span class="stat-label">Name</span> <span class="stat-value" style="background:transparent; padding:0;">${msg.name}</span></div>
+            <div class="stat-row"><span class="stat-label">Size</span> <span class="stat-value">${msg.width} × ${msg.height}px</span></div>
+            <div class="stat-row"><span class="stat-label">Stroke</span> <span class="stat-value">${msg.strokeWidth}px</span></div>
+          `;
+        } else {
+          contentDiv.innerHTML = `
+            <div class="stat-row"><span class="stat-label">Batch Mode</span> <span class="stat-value batch-active">Active</span></div>
+            <div class="stat-row"><span class="stat-label">Selected</span> <span class="stat-value">${msg.count} Icons</span></div>
+            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.4; margin-top: 14px; padding-top: 14px; border-top: 2px dashed var(--border);">IconFlow will process all ${msg.count} masters simultaneously.</p>
+          `;
+        }
+      } else {
+        rightControls.style.opacity = '0.4';
+        rightControls.style.pointerEvents = 'none';
+        leftControls.style.display = 'none';
+        contentDiv.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon-container">
+              <svg class="scaling-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="20" height="20" rx="3" stroke="#805d93" stroke-width="1.5" stroke-dasharray="3 2" />
+                <rect x="7" y="7" width="10" height="10" rx="1.5" fill="#805d93" />
+              </svg>
+            </div>
+            <div class="empty-text">Select one or more<br>icons to begin.</div>
+          </div>
+        `;
+      }
+    };
+
+    document.getElementById('add-size-btn').onclick = () => {
+      const input = document.getElementById('custom-size-input');
+      const val = parseInt(input.value);
+      if (!val || val <= 0) {
+        showToast("Enter a valid size.");
+        return;
+      }
+      const grid = document.getElementById('size-grid');
+      const newLabel = document.createElement('label');
+      newLabel.innerHTML = `<input type="checkbox" value="${val}" class="size-cb" checked> ${val}`;
+      grid.appendChild(newLabel);
+      input.value = '';
+      showToast(`${val}px added to sizes!`);
+    };
+
+    document.getElementById('generate-btn').onclick = () => {
+      const sizes = Array.from(document.querySelectorAll('.size-cb:checked')).map(cb => parseInt(cb.value));
+      const weights = Array.from(document.querySelectorAll('.weight-cb:checked')).map(cb => cb.value);
+      const opticalCorrection = document.getElementById('optical-correction').checked;
+      const snapGrid = document.getElementById('snap-grid').checked;
+      const outlineStrokes = document.getElementById('outline-strokes').checked;
+      const outputType = document.querySelector('.output-cb:checked').value;
+
+      if (sizes.length === 0) { showToast("Error: Select at least one size."); return; }
+      if (weights.length === 0) { showToast("Error: Select at least one weight."); return; }
+      
+      parent.postMessage({ pluginMessage: { type: 'GENERATE', sizes, weights, opticalCorrection, snapGrid, outlineStrokes, outputType } }, '*');
+    };
+  </script>
+</body>
+</html>

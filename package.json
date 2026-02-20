@@ -1,0 +1,14 @@
+{
+  "name": "icon-scaling-engine",
+  "version": "1.0.0",
+  "description": "Figma plugin to auto-scale icons",
+  "main": "dist/code.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.89.0",
+    "typescript": "^5.3.3"
+  }
+}
