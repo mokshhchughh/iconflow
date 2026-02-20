@@ -1,10 +1,11 @@
 <div align="center">
   <img src="assets/logo.png" alt="IconFlow Logo" width="120">
-  <h1>❖ IconFlow for Figma</h1>
+  <h1>IconFlow for Figma</h1>
   <p><b>Resize and perfect your icons in one click.</b></p>
 </div>
 
 <img src="assets/cover.png" alt="IconFlow Cover Art" width="100%">
+<video src="assets/demo.mp4" autoplay loop muted playsinline width="100%"></video>
 
 IconFlow is an intelligent auto-scaling engine built for product designers and design system managers. Turn one master icon into a production-ready design system across multiple sizes and weights in seconds—complete with pixel-snapping and optical correction.
 
