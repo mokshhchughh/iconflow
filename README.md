@@ -5,7 +5,7 @@
 </div>
 
 <img src="assets/cover.png" alt="IconFlow Cover Art" width="100%">
-<video src="assets/demo.mp4" autoplay loop muted playsinline width="100%"></video>
+<video src="https://github.com/mokshhchughh/iconflow/raw/main/assets/demo.mp4" autoplay loop muted playsinline width="100%"></video>
 
 IconFlow is an intelligent auto-scaling engine built for product designers and design system managers. Turn one master icon into a production-ready design system across multiple sizes and weights in seconds—complete with pixel-snapping and optical correction.
 
@@ -27,4 +27,4 @@ Want to run IconFlow locally or contribute?
 
 1. Clone this repository:
    ```bash
-   git clone [https://github.com/mokshhchughh/iconflow.git](https://github.com/mokshhchughh/iconflow.git)
+   git clone https://github.com/mokshhchughh/iconflow.git
